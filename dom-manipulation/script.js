@@ -5,19 +5,19 @@ let quotes = [
     { text: "Believe you can and you're halfway there.", category: "Inspiration" }
   ];
   
-  // Function to display a random quote
-  function displayRandomQuote() {
+  // Function to show a random quote
+  function showRandomQuote() {
     const quoteDisplay = document.getElementById("quoteDisplay");
   
     if (quotes.length === 0) {
-      quoteDisplay.textContent = "No quotes available.";
+      quoteDisplay.innerHTML = "No quotes available.";
       return;
     }
   
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
   
-    quoteDisplay.textContent = `"${randomQuote.text}" — ${randomQuote.category}`;
+    quoteDisplay.innerHTML = `"${randomQuote.text}" — <strong>${randomQuote.category}</strong>`;
   }
   
   // Function to add a new quote
@@ -41,13 +41,13 @@ let quotes = [
   
     alert("Quote added successfully!");
   
-    // Update display (optional)
-    displayRandomQuote();
+    // Optionally refresh displayed quote
+    showRandomQuote();
   }
   
-  // Event listener for "Show New Quote" button
-  document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
+  // Event listener for the button
+  document.getElementById("newQuote").addEventListener("click", showRandomQuote);
   
-  // Display a quote on page load
-  displayRandomQuote();
+  // Show a quote on page load
+  showRandomQuote();
   
