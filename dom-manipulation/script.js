@@ -135,14 +135,20 @@ async function postQuoteToServer(quote) {
 // SERVER WINS STRATEGY
 async function syncWithServer() {
   const serverQuotes = await fetchQuotesFromServer();
+
+  // Server data takes precedence
   quotes = serverQuotes;
   saveQuotes();
   populateCategories();
   showRandomQuote();
 
+  // ✅ REQUIRED UI NOTIFICATION
+  alert("Quotes synced with server!");
+
   document.getElementById("syncMessage").innerText =
     "Synced with server (server data applied)";
 }
+
 
 // ✅ REQUIRED FUNCTION NAME
 async function syncQuotes() {
