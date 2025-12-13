@@ -9,6 +9,12 @@
 
   <h1>Dynamic Quote Generator</h1>
 
+  <!-- Category filter -->
+  <label for="categoryFilter">Filter by category:</label>
+  <select id="categoryFilter" onchange="filterQuotes()">
+    <option value="all">All Categories</option>
+  </select>
+
   <div id="quoteDisplay"></div>
 
   <button id="newQuote">Show New Quote</button>
@@ -19,6 +25,18 @@
 
   <!-- JSON EXPORT -->
   <button onclick="exportQuotesToJson()">Export Quotes</button>
+  <br><br>
+
+  <!-- Server sync UI -->
+  <div id="syncStatus" style="padding:10px; margin-top:10px; display:none;"></div>
+  <button id="manualSyncBtn">Sync Now</button>
+  <button id="viewConflictsBtn" style="display:none;">View Conflicts</button>
+
+  <div id="conflictPanel" style="display:none; padding:10px; background:#f8d7da; border:1px solid #dc3545; margin-top:10px;">
+    <h3>Conflicts Detected</h3>
+    <div id="conflictList"></div>
+    <button onclick="resolveConflicts()">Resolve Conflicts</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
