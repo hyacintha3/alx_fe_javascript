@@ -1,16 +1,16 @@
-// ======================= QUOTES =======================
+// ===================== QUOTES =====================
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   { text: "Stay hungry, stay foolish.", category: "Motivation" },
   { text: "Knowledge is power.", category: "Education" },
   { text: "Dream big.", category: "Inspiration" }
 ];
 
-// ======================= SAVE =======================
+// ===================== SAVE =====================
 function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// ======================= RANDOM QUOTE =======================
+// ===================== RANDOM QUOTE =====================
 function showRandomQuote() {
   const display = document.getElementById("quoteDisplay");
   const filteredQuotes = getFilteredQuotes();
@@ -24,7 +24,7 @@ function showRandomQuote() {
   display.innerHTML = filteredQuotes[randomIndex].text;
 }
 
-// ======================= ADD QUOTE =======================
+// ===================== ADD QUOTE =====================
 function createAddQuoteForm() {
   const div = document.createElement("div");
   div.innerHTML = `
@@ -45,7 +45,7 @@ function addQuote() {
   showRandomQuote();
 }
 
-// ======================= TASK 2: FILTERING =======================
+// ===================== TASK 2: FILTERING =====================
 function populateCategories() {
   const filter = document.getElementById("categoryFilter");
   const categories = [...new Set(quotes.map(q => q.category))];
@@ -79,18 +79,36 @@ function getFilteredQuotes() {
   return quotes.filter(q => q.category === selectedCategory);
 }
 
-// ======================= TASK 3: SERVER SYNC =======================
+// ===================== TASK 1: EXPORT =====================
+function exportQuotesToJson() {
+  const data = JSON.stringify(quotes, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "quotes.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+// ===================== TASK 3: SERVER SYNC =====================
 const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 
-async function syncWithServer() {
+/* ✅ REQUIRED FUNCTION NAME */
+async function fetchQuotesFromServer() {
   const response = await fetch(SERVER_URL);
-  const serverData = await response.json();
+  const data = await response.json();
 
-  // Simulate quotes from server
-  const serverQuotes = serverData.slice(0, 5).map(item => ({
+  return data.slice(0, 5).map(item => ({
     text: item.title,
     category: "Server"
   }));
+}
+
+async function syncWithServer() {
+  const serverQuotes = await fetchQuotesFromServer();
 
   // SERVER WINS STRATEGY
   quotes = serverQuotes;
@@ -99,13 +117,13 @@ async function syncWithServer() {
   showRandomQuote();
 
   document.getElementById("syncMessage").innerText =
-    "Data synced with server (server data applied)";
+    "Synced with server (server data applied)";
 }
 
 // Periodic sync
 setInterval(syncWithServer, 30000);
 
-// ======================= INIT =======================
+// ===================== INIT =====================
 document.getElementById("newQuote")
   .addEventListener("click", showRandomQuote);
 
