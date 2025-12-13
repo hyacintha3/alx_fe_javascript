@@ -97,35 +97,45 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   }
   
   // ===================== CATEGORY FILTER =====================
-  function getSelectedCategory() {
-    return localStorage.getItem("lastCategory") || "all";
+  // Get quotes filtered by selected category
+function getFilteredQuotes() {
+  const selectedCategory = localStorage.getItem("lastCategory") || "all";
+
+  if (selectedCategory === "all") {
+    return quotes;
   }
-  
-  function getFilteredQuotes() {
-    const selected = getSelectedCategory();
-    return selected === "all" ? quotes : quotes.filter(q => q.category === selected);
+
+  return quotes.filter(quote => quote.category === selectedCategory);
+}
+
+// Filter quotes when dropdown changes
+function filterQuotes() {
+  const selectedCategory = document.getElementById("categoryFilter").value;
+
+  localStorage.setItem("lastCategory", selectedCategory);
+
+  showRandomQuote();
+}
+// Get quotes filtered by selected category
+function getFilteredQuotes() {
+  const selectedCategory = localStorage.getItem("lastCategory") || "all";
+
+  if (selectedCategory === "all") {
+    return quotes;
   }
-  
-  function populateCategories() {
-    const select = document.getElementById("categoryFilter");
-    const categories = [...new Set(quotes.map(q => q.category))];
-  
-    select.innerHTML = '<option value="all">All Categories</option>';
-  
-    categories.forEach(cat => {
-      const opt = document.createElement("option");
-      opt.value = cat;
-      opt.textContent = cat;
-      if (cat === getSelectedCategory()) opt.selected = true;
-      select.appendChild(opt);
-    });
-  }
-  
-  function filterQuotes() {
-    const selected = document.getElementById("categoryFilter").value;
-    localStorage.setItem("lastCategory", selected);
-    showRandomQuote();
-  }
+
+  return quotes.filter(quote => quote.category === selectedCategory);
+}
+
+// Filter quotes when dropdown changes
+function filterQuotes() {
+  const selectedCategory = document.getElementById("categoryFilter").value;
+
+  localStorage.setItem("lastCategory", selectedCategory);
+
+  showRandomQuote();
+}
+
   
   // ===================== SERVER SYNC & CONFLICT =====================
   const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // mock API
