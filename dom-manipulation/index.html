@@ -18,10 +18,12 @@
 
   <button id="newQuote">Show New Quote</button>
 
+  <!-- ✅ REQUIRED IMPORT INPUT -->
+  <input type="file" id="importFile" onchange="importFromJsonFile(event)" />
+
   <!-- ✅ REQUIRED EXPORT BUTTON -->
   <button onclick="exportQuotesToJson()">Export Quotes</button>
 
-  <!-- Sync message -->
   <p id="syncMessage"></p>
 
   <script src="script.js"></script>
